@@ -6,6 +6,7 @@ use App\Repository\DelegationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: DelegationRepository::class)]
 class Delegation
@@ -17,9 +18,6 @@ class Delegation
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $codeFlag = null;
 
     #[ORM\OneToMany(mappedBy: 'codeDelegation', targetEntity: Athlete::class)]
     private Collection $athletes;
@@ -42,18 +40,6 @@ class Delegation
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getCodeFlag(): ?string
-    {
-        return $this->codeFlag;
-    }
-
-    public function setCodeFlag(?string $codeFlag): self
-    {
-        $this->codeFlag = $codeFlag;
 
         return $this;
     }

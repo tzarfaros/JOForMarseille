@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Athlete;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use PhpParser\Node\Expr\Cast\Bool_;
 
 /**
  * @extends ServiceEntityRepository<Athlete>
@@ -37,6 +38,38 @@ class AthleteRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * @return Athlete
+     */
+    public function findAthletesByFilters(bool $gender = null , string $nationality = null , string $epreuves = null)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $dql = "SELECT a FROM App\Entity\Athlete a INNER JOIN a.epreuves e WHERE a.image == 'todo' ";
+
+        if (isset($gender) && $gender) {
+            $andGender= "AND a.gender = '$gender' ";
+            $dql .= $andGender;
+        }
+
+        if (isset($nationality) && $nationality) {
+            $andNationality= "AND a.nationality LIKE '%$nationality%' ";
+            $dql .= $andNationality;
+        }
+
+        if (isset($epreuves) && $epreuves) {
+            $andEpreuves= "AND e.name LIKE '%$epreuves%' ";
+            $dql .= $andEpreuves;
+        }
+
+        $orderBy = "ORDER BY a.nationality DESC"; 
+        $dql .= $orderBy;
+
+        $query = $entityManager->createQuery($dql);
+
+        return $query->getResult();
     }
 
 //    /**

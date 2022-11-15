@@ -6,6 +6,7 @@ use App\Repository\SportRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SportRepository::class)]
 class Sport
@@ -81,22 +82,22 @@ class Sport
         return $this->epreuves;
     }
 
-    public function addEpreufe(Epreuve $epreufe): self
+    public function addEpreuVe(Epreuve $epreuve): self
     {
-        if (!$this->epreuves->contains($epreufe)) {
-            $this->epreuves->add($epreufe);
-            $epreufe->setCodeSport($this);
+        if (!$this->epreuves->contains($epreuve)) {
+            $this->epreuves->add($epreuve);
+            $epreuve->setCodeSport($this);
         }
 
         return $this;
     }
 
-    public function removeEpreufe(Epreuve $epreufe): self
+    public function removeEpreuVe(Epreuve $epreuve): self
     {
-        if ($this->epreuves->removeElement($epreufe)) {
+        if ($this->epreuves->removeElement($epreuve)) {
             // set the owning side to null (unless already changed)
-            if ($epreufe->getCodeSport() === $this) {
-                $epreufe->setCodeSport(null);
+            if ($epreuve->getCodeSport() === $this) {
+                $epreuve->setCodeSport(null);
             }
         }
 
